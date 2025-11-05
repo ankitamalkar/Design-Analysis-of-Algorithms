@@ -7,13 +7,10 @@ using namespace std;
 
 const int INF = numeric_limits<int>::max();
 
-// Edge structure
 struct Edge {
     int to;
     int weight;
 };
-
-// Graph class
 class Graph {
 private:
     int V; // Number of intersections
@@ -23,8 +20,6 @@ public:
     Graph(int vertices) : V(vertices) {
         adj.resize(V);
     }
-
-    // Add or update an edge (dynamic weights)
     void addOrUpdateEdge(int u, int v, int w) {
         bool updated = false;
         for (auto &edge : adj[u]) {
@@ -36,7 +31,6 @@ public:
         }
         if (!updated) adj[u].push_back({v, w});
 
-        // For undirected graph, update reverse edge
         updated = false;
         for (auto &edge : adj[v]) {
             if (edge.to == u) {
@@ -48,12 +42,11 @@ public:
         if (!updated) adj[v].push_back({u, w});
     }
 
-    // Dijkstra's algorithm from source
     vector<int> dijkstra(int src) {
         vector<int> dist(V, INF);
         dist[src] = 0;
 
-        // Min-heap: pair(distance, node)
+     
         priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
         pq.push({0, src});
 
@@ -74,7 +67,7 @@ public:
         return dist;
     }
 
-    // Function to display shortest path distances from source
+   
     void displayDistances(const vector<int>& dist, int src) {
         cout << "\nShortest travel time from Intersection " << src << ":\n";
         cout << left << setw(15) << "Intersection" << setw(15) << "Time(min)" << endl;
@@ -109,7 +102,7 @@ int main() {
     vector<int> distances = city.dijkstra(source);
     city.displayDistances(distances, source);
 
-    // Example: Dynamic weight update (traffic congestion changes)
+    
     char choice;
     do {
         cout << "\nDo you want to update a road travel time? (y/n): ";
@@ -120,7 +113,7 @@ int main() {
             cin >> u >> v >> w;
             city.addOrUpdateEdge(u, v, w);
 
-            // Recompute shortest paths
+           
             distances = city.dijkstra(source);
             city.displayDistances(distances, source);
         }
