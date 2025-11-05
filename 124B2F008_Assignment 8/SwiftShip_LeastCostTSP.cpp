@@ -1,14 +1,8 @@
-// SwiftShip_LeastCostTSP.cpp
-// Unique implementation of TSP using Branch and Bound (Least Cost Method)
-// Case Study: Optimizing Delivery Routes for SwiftShip Logistics Company
-// Author: Ankita Malkar
-
 #include <bits/stdc++.h>
 using namespace std;
 
 const int INF = 1e9;
 
-// Function to find the minimum edge cost from a given node
 int firstMin(const vector<vector<int>>& cost, int i, int N) {
     int minVal = INF;
     for (int k = 0; k < N; k++)
@@ -17,7 +11,6 @@ int firstMin(const vector<vector<int>>& cost, int i, int N) {
     return minVal;
 }
 
-// Function to find the second minimum edge cost from a given node
 int secondMin(const vector<vector<int>>& cost, int i, int N) {
     int first = INF, second = INF;
     for (int j = 0; j < N; j++) {
@@ -35,7 +28,6 @@ int N;
 int finalRes = INF;
 vector<int> finalPath;
 
-// Recursive Branch and Bound function
 void TSPRec(const vector<vector<int>>& cost, vector<int>& currPath, vector<bool>& visited, int currBound, int currWeight, int level) {
     if (level == N) {
         if (cost[currPath[level - 1]][currPath[0]] != 0) {
@@ -78,36 +70,28 @@ void TSP(const vector<vector<int>>& cost) {
     vector<int> currPath(N + 1, -1);
     vector<bool> visited(N, false);
     int currBound = 0;
-
     for (int i = 0; i < N; i++)
         currBound += (firstMin(cost, i, N) + secondMin(cost, i, N));
-
     currBound = (currBound & 1) ? currBound / 2 + 1 : currBound / 2;
     visited[0] = true;
     currPath[0] = 0;
-
     TSPRec(cost, currPath, visited, currBound, 0, 1);
 }
 
 int main() {
     cout << "SwiftShip Logistics - Least Cost Delivery Route Optimization\n";
     cout << "------------------------------------------------------------\n";
-
     cout << "Enter number of cities: ";
     cin >> N;
-
     vector<vector<int>> cost(N, vector<int>(N));
     cout << "Enter the cost matrix (distance * fuel cost between cities):\n";
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
             cin >> cost[i][j];
-
     TSP(cost);
-
     cout << "\nOptimal Delivery Route: ";
     for (int i = 0; i < N + 1; i++)
         cout << finalPath[i] << (i == N ? "" : " -> ");
     cout << "\nMinimum Delivery Cost: " << finalRes << "\n";
-
     return 0;
 }
