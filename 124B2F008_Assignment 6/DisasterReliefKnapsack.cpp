@@ -4,20 +4,18 @@
 #include <string>
 using namespace std;
 
-// Structure to represent an item
+
 struct Item {
-    string name;   // Name of the supply
-    int weight;    // Weight in kg
-    int value;     // Utility/importance
-    int priority;  // Higher value = more critical
+    string name;  
+    int weight;
+    int value;     
+    int priority;  
 };
 
-// Function to solve 0/1 Knapsack using Dynamic Programming
 int knapsackDP(const vector<Item>& items, int W, vector<int>& selectedItems) {
     int N = items.size();
     vector<vector<int>> dp(N + 1, vector<int>(W + 1, 0));
 
-    // Fill DP table
     for (int i = 1; i <= N; ++i) {
         for (int w = 0; w <= W; ++w) {
             if (items[i - 1].weight <= w) {
@@ -31,7 +29,6 @@ int knapsackDP(const vector<Item>& items, int W, vector<int>& selectedItems) {
         }
     }
 
-    // Backtrack to find selected items
     int w = W;
     for (int i = N; i > 0; --i) {
         if (dp[i][w] != dp[i - 1][w]) {
